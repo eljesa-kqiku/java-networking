@@ -5,4 +5,6 @@ module com.example.javanetworking {
 
     opens com.example.javanetworking to javafx.fxml;
     exports com.example.javanetworking;
+    opens com.example.javanetworking.AESEncryptor to javafx.fxml;
+    exports com.example.javanetworking.AESEncryptor;
 }
