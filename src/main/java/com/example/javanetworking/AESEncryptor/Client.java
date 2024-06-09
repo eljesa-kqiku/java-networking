@@ -35,6 +35,7 @@ public class Client extends Application {
             System.out.println(e);
         }
         stage.setScene(scene);
+        stage.setTitle("AES Encryptor");
         stage.show();
     }
 
