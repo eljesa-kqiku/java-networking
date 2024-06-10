@@ -9,4 +9,6 @@ module com.example.javanetworking {
     exports com.example.javanetworking.AESEncryptor;
     opens com.example.javanetworking.SocketChat to javafx.fxml;
     exports com.example.javanetworking.SocketChat;
+    exports com.example.javanetworking.SocketChat.Model;
+    opens com.example.javanetworking.SocketChat.Model to javafx.fxml;
 }
