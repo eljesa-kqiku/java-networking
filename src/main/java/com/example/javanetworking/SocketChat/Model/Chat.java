@@ -35,11 +35,8 @@ public class Chat {
         return acceptTimestamp;
     }
 
-    public void setRequestAccepted(boolean requestAccepted) {
-        this.requestAccepted = requestAccepted;
-    }
-
-    public void setAcceptTimestamp(String acceptTimestamp) {
+    public void acceptInvite(String acceptTimestamp) {
+        this.requestAccepted = true;
         this.acceptTimestamp = acceptTimestamp;
     }
 }
