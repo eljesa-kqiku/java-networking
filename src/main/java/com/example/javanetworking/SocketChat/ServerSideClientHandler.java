@@ -12,17 +12,30 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 
-public class ServerSideClientHandler implements ClientHandler {
+public class ServerSideClientHandler implements ClientHandler, Runnable{
     private final Server server;
-    private final ObjectInputStream input;
-    private final ObjectOutputStream output;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
+    private final Socket socket;
     private User currentUser;
 
     public ServerSideClientHandler(Socket socket, Server server) throws IOException {
-        this.input = new ObjectInputStream(socket.getInputStream());
-        this.output = new ObjectOutputStream(socket.getOutputStream());
+        this.socket = socket;
         this.server = server;
     }
+    public void run() {
+        try {
+            this.input = new ObjectInputStream(socket.getInputStream());
+            this.output = new ObjectOutputStream(socket.getOutputStream());
+//            while (true) {
+//
+//            }
+        }
+        catch(IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Override
     public void setUserData(User userData) {
         this.currentUser = userData;

@@ -1,8 +1,9 @@
 package com.example.javanetworking.SocketChat.Model;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 
-public class Message {
+public class Message implements Serializable {
     private final InetAddress senderIpAddress;
     private final InetAddress receiverIpAddress;
     private final String content;

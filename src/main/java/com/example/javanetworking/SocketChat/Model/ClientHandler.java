@@ -1,5 +1,6 @@
 package com.example.javanetworking.SocketChat.Model;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

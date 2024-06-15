@@ -7,6 +7,7 @@ import com.example.javanetworking.SocketChat.Model.User;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
 
 public class Server {
@@ -14,12 +15,21 @@ public class Server {
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
     public void start() throws IOException {
-        ServerSocket serverSocket = new ServerSocket(8000);
+        ServerSocket serverSocket = new ServerSocket(8002);
         new Thread(() -> {
             while (true){
                 try {
-                    ClientHandler handler = new ServerSideClientHandler(serverSocket.accept(), this);
-                    clientHandlers.add(handler);
+                    Socket socket = serverSocket.accept();
+                    new Thread(() -> {
+                        try {
+                            ClientHandler handler = new ServerSideClientHandler(socket, this);
+                            System.out.println(STR."A new user joined:\{socket.getInetAddress()}");
+                            clientHandlers.add(handler);
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }).start();
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
