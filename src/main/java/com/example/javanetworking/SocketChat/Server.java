@@ -22,9 +22,10 @@ public class Server {
                     Socket socket = serverSocket.accept();
                     new Thread(() -> {
                         try {
-                            ClientHandler handler = new ServerSideClientHandler(socket, this);
+                            ServerSideClientHandler handler = new ServerSideClientHandler(socket, this);
                             System.out.println(STR."A new user joined:\{socket.getInetAddress()}");
                             clientHandlers.add(handler);
+                            handler.run();
                         } catch (IOException e) {
                             throw new RuntimeException(e);
                         }
@@ -46,6 +47,7 @@ public class Server {
     public void setUser(User user){
         users.removeIf(existing_user -> existing_user.getIpAddress() == user.getIpAddress());
         users.add(user);
+        System.out.println(users.get(0).getDisplayName());
     }
     public ArrayList<User> getInvitations(InetAddress address){
         ArrayList<User> invitations = new ArrayList<>();

@@ -22,17 +22,24 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
     public ServerSideClientHandler(Socket socket, Server server) throws IOException {
         this.socket = socket;
         this.server = server;
+        this.input = new ObjectInputStream(socket.getInputStream());
+        this.output = new ObjectOutputStream(socket.getOutputStream());
     }
     public void run() {
-        try {
-            this.input = new ObjectInputStream(socket.getInputStream());
-            this.output = new ObjectOutputStream(socket.getOutputStream());
-//            while (true) {
-//
-//            }
-        }
-        catch(IOException ex) {
-            ex.printStackTrace();
+        while (true) {
+            try {
+                Object data = input.readObject();
+
+                if(data.getClass() == User.class){
+                    setUserData((User) data);
+                }
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
         }
     }
 
