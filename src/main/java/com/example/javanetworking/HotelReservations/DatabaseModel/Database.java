@@ -46,34 +46,53 @@ public class Database {
         return instance;
     }
     public void createReservation(String clientFirstName, String clientLastName, UUID roomId, Date startDate, Date endDate){
+        if(!isRoomAvailable(startDate, endDate, roomId))
+            return;
+
         Guest newGuest = new Guest(clientFirstName, clientLastName);
         guests.add(newGuest);
         reservations.add(new Reservation(newGuest.getId(), roomId, startDate, endDate));
     }
     public void createReservation(UUID clientId, UUID roomId, Date startDate, Date endDate){
+        if(!isRoomAvailable(startDate, endDate, roomId))
+            return;
+
         reservations.add(new Reservation(clientId, roomId, startDate, endDate));
+    }
+    private boolean isRoomAvailable(Date startDate, Date endDate, UUID roomId){
+        List<Reservation> sameDateReservations = sameDateReservations(startDate, endDate);
+        for (Reservation res : sameDateReservations)
+            if(res.getRoomId().compareTo(roomId) == 0)
+                return false;
+
+        return true;
     }
     public void cancelReservation(UUID reservationID){
         reservations.removeIf(item -> item.getId().compareTo(reservationID) == 0);
     }
     public ArrayList<Room> getAvailableRooms(Date startDate, Date endDate){
-        if(this.reservations.isEmpty()){
-            return this.rooms;
-        }
-
-        List<Reservation> sameDateReservations = reservations.stream().filter(item ->
-                (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(startDate) < 0 ||
-                (item.getStartDate()).compareTo(endDate) > 0 && (item.getEndDate()).compareTo(endDate) <= 0  ||
-                (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(endDate) <= 0
-        ).collect(Collectors.toList());
-
         ArrayList<Room> availableRooms = new ArrayList<>(rooms);
 
+        // if there is no reservation that means that all the rooms are available
+        if(this.reservations.isEmpty()){
+            return availableRooms;
+        }
+        // finding all reservations between the same dates
+        List<Reservation> sameDateReservations = sameDateReservations(startDate, endDate);
+
+        // the rooms of existing reservations should be excluded
         for (Reservation res : sameDateReservations){
             availableRooms.removeIf(item -> item.getId().compareTo(res.getRoomId()) == 0);
         }
 
         return availableRooms;
+    }
+    private List<Reservation> sameDateReservations(Date startDate, Date endDate){
+        return reservations.stream().filter(item ->
+                (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(startDate) < 0 ||
+                        (item.getStartDate()).compareTo(endDate) > 0 && (item.getEndDate()).compareTo(endDate) <= 0  ||
+                        (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(endDate) <= 0
+        ).collect(Collectors.toList());
     }
 
 }
