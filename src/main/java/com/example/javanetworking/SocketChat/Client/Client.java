@@ -1,4 +1,4 @@
-package com.example.javanetworking.SocketChat;
+package com.example.javanetworking.SocketChat.Client;
 
 import com.example.javanetworking.HelloApplication;
 import com.example.javanetworking.SocketChat.Model.User;
@@ -23,7 +23,7 @@ public class Client extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chat/name-avatar-screen.fxml"));
         fxmlLoader.setControllerFactory(controllerClass -> {
             try {
-                return controllerClass.getConstructor(com.example.javanetworking.SocketChat.Client.class).newInstance(this);
+                return controllerClass.getConstructor(Client.class).newInstance(this);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }

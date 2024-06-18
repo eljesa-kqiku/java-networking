@@ -1,16 +1,12 @@
-package com.example.javanetworking.SocketChat;
+package com.example.javanetworking.SocketChat.Client;
 
-import com.example.javanetworking.SocketChat.Model.User;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class ClientUIController {
+public class NewUserUIControler {
     private Client controller;
     private  DropShadow dropShadow = new DropShadow();
     private String selectedAvatar = "1";
@@ -21,7 +17,7 @@ public class ClientUIController {
 
     private ImageView[] buttons = new ImageView[15];
 
-    public ClientUIController(Client c){
+    public NewUserUIControler(Client c){
         this.controller = c;
     }
     @FXML
