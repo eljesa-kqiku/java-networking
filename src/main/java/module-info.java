@@ -1,6 +1,7 @@
 module com.example.javanetworking {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.rmi;
 
 
     opens com.example.javanetworking to javafx.fxml;
@@ -16,6 +17,8 @@ module com.example.javanetworking {
     exports com.example.javanetworking.SocketChat.Client;
     opens com.example.javanetworking.SocketChat.Client to javafx.fxml;
 
-    exports com.example.javanetworking.HotelReservations;
-    opens com.example.javanetworking.HotelReservations to javafx.fxml;
+//    exports com.example.javanetworking.HotelReservations;
+//    opens com.example.javanetworking.HotelReservations to javafx.fxml;
+    exports com.example.javanetworking.HotelReservations.DatabaseModel;
+    opens com.example.javanetworking.HotelReservations.DatabaseModel to javafx.fxml;
 }

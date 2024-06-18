@@ -1,9 +1,6 @@
 package com.example.javanetworking.HotelReservations.DatabaseModel;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Database {
@@ -25,15 +22,15 @@ public class Database {
         // region Rooms
             rooms = new ArrayList<>();
             for (int i = 0; i < 10; i++)
-                rooms.add(new Room(roomTypes.get(0).getId(), STR."10\{i}"));
+                rooms.add(new Room(roomTypes.get(0).getId(), 10 + "i"));
             for (int i = 0; i < 20; i++)
-                rooms.add(new Room(roomTypes.get(1).getId(), STR."20\{i}"));
+                rooms.add(new Room(roomTypes.get(1).getId(), 20 + "i"));
             for (int i = 0; i < 5; i++)
-                rooms.add(new Room(roomTypes.get(2).getId(), STR."30\{i}"));
+                rooms.add(new Room(roomTypes.get(2).getId(), 30 + "i"));
             for (int i = 0; i < 3; i++)
-                rooms.add(new Room(roomTypes.get(3).getId(), STR."40\{i}"));
+                rooms.add(new Room(roomTypes.get(3).getId(), 40 + "i"));
             for (int i = 0; i < 2; i++)
-                rooms.add(new Room(roomTypes.get(4).getId(), STR."50\{i}"));
+                rooms.add(new Room(roomTypes.get(4).getId(), 50 + "i"));
         // endregion
 
         reservations = new ArrayList<>();
@@ -45,7 +42,10 @@ public class Database {
         }
         return instance;
     }
-    public void createReservation(String clientFirstName, String clientLastName, UUID roomId, Date startDate, Date endDate){
+    public void createReservation(String clientFirstName, String clientLastName, String roomNumber, Date startDate, Date endDate){
+        ArrayList<Room> rooms = getAvailableRooms(startDate, endDate);
+        UUID roomId = rooms.stream().filter(item -> Objects.equals(item.getName(), roomNumber)).findFirst().get().getId();
+
         if(!isRoomAvailable(startDate, endDate, roomId))
             return;
 
@@ -94,5 +94,20 @@ public class Database {
                         (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(endDate) <= 0
         ).collect(Collectors.toList());
     }
+
+    public Map<RoomType, List<Room>> getStructuredAvailableRooms(Date startDate, Date endDate){
+        ArrayList<Room> availableRooms = this.getAvailableRooms(startDate, endDate);
+        LinkedHashMap<RoomType, List<Room>> structuredAvailableRooms = new LinkedHashMap<>();
+
+        for (RoomType rt : roomTypes) {
+            List<Room> rooms = availableRooms.stream().filter(item -> item.getId().compareTo(rt.getId()) == 0).collect(Collectors.toList());
+            if(!rooms.isEmpty()){
+                structuredAvailableRooms.put(rt, rooms);
+            }
+        }
+
+        return structuredAvailableRooms;
+    }
+
 
 }
