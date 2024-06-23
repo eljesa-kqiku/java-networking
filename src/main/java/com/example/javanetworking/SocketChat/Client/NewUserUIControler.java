@@ -7,19 +7,20 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
 public class NewUserUIControler {
-    private Client controller;
-    private  DropShadow dropShadow = new DropShadow();
+    private final Client controller;
+    private final DropShadow dropShadow = new DropShadow();
     private String selectedAvatar = "1";
     @FXML
     private ImageView av1, av2, av3, av4, av5, av6, av7, av8, av9, av10, av11, av12, av13, av14, av15;
     @FXML
     private TextField displayName;
 
-    private ImageView[] buttons = new ImageView[15];
+    private final ImageView[] buttons = new ImageView[15];
 
-    public NewUserUIControler(Client c){
+    public NewUserUIControler(Client c) {
         this.controller = c;
     }
+
     @FXML
     private void initialize() {
         buttons[0] = av1;
@@ -39,21 +40,23 @@ public class NewUserUIControler {
         buttons[14] = av15;
 
         dropShadow.setInput(null); // Setting input to null achieves "three-pass-box" effect
-        dropShadow.setColor(javafx.scene.paint.Color.rgb(54,155,176));
+        dropShadow.setColor(javafx.scene.paint.Color.rgb(54, 155, 176));
         dropShadow.setWidth(10);
         dropShadow.setHeight(10);
         dropShadow.setRadius(10);
 
         buttons[Integer.parseInt(selectedAvatar) - 1].setEffect(dropShadow);
     }
+
     @FXML
     protected void onSubmit() {
-        if(displayName.getText().isEmpty())
+        if (displayName.getText().isEmpty())
             return;
         controller.setUser(STR."\{displayName.getText()} - \{selectedAvatar}");
     }
+
     @FXML
-    protected void setSelectedAvatar(MouseEvent e){
+    protected void setSelectedAvatar(MouseEvent e) {
         String a = ((ImageView) e.getSource()).getId().substring(2);
         buttons[Integer.parseInt(selectedAvatar) - 1].setEffect(null);
         selectedAvatar = a;

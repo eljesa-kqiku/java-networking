@@ -27,7 +27,7 @@ public class Message implements Serializable {
         return content;
     }
 
-    public String getTimestamp(){
+    public String getTimestamp() {
         return timestamp;
     }
 }

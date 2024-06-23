@@ -1,18 +1,20 @@
 package com.example.javanetworking.SocketChat;
 
-import com.example.javanetworking.SocketChat.Model.*;
+import com.example.javanetworking.SocketChat.Model.Chat;
+import com.example.javanetworking.SocketChat.Model.ClientHandler;
+import com.example.javanetworking.SocketChat.Model.Message;
+import com.example.javanetworking.SocketChat.Model.User;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.stream.Collectors;
 
-public class ServerSideClientHandler implements ClientHandler, Runnable{
+public class ServerSideClientHandler implements ClientHandler, Runnable {
     private final Server server;
-    private ObjectInputStream input;
-    private ObjectOutputStream output;
+    private final ObjectInputStream input;
+    private final ObjectOutputStream output;
     private final Socket socket;
     private User currentUser;
 
@@ -22,24 +24,29 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
         this.input = new ObjectInputStream(socket.getInputStream());
         this.output = new ObjectOutputStream(socket.getOutputStream());
     }
+
     public void run() {
         while (true) {
             try {
                 Object data = input.readObject();
 
                 // Setting user details
-                if(data.getClass() == User.class){
+                if (data.getClass() == User.class) {
                     setUserData((User) data);
                     ArrayList<User> allOtherUsers = new ArrayList<>();
-                    for(User otherUser : server.getUsers()){
-                        if(!otherUser.getDisplayName().equals(currentUser.getDisplayName()))
+                    for (User otherUser : server.getUsers()) {
+                        if (!otherUser.getDisplayName().equals(currentUser.getDisplayName()))
                             allOtherUsers.add(otherUser);
                     }
                     output.writeObject(allOtherUsers);
                 }
                 // Invitation created/accepted
-                if(data.getClass() == Chat.class){
+                if (data.getClass() == Chat.class) {
                     sendInvitation((Chat) data);
+                }
+                // New message sent
+                if (data.getClass() == Message.class) {
+                    sendMessage((Message) data);
                 }
 
             } catch (IOException e) {
@@ -56,18 +63,20 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
         server.setUser(userData);
     }
 
-    public void updateFriendList(User newUser){
-        try{
-            if(!newUser.getDisplayName().equals(currentUser.getDisplayName()))
+    public void updateFriendList(User newUser) {
+        try {
+            if (!newUser.getDisplayName().equals(currentUser.getDisplayName()))
                 output.writeObject(newUser);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Override
     public void sendInvitation(Chat chat) {
         server.invite(chat);
     }
+
     @Override
     public void getInvitation(Chat chat) {
         try {
@@ -77,31 +86,26 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
         }
     }
 
-
-
-
-
-
-
     @Override
     public void sendMessage(Message message) {
         try {
-            // TODO: read from input
-            server.sendMessage(message.getSenderName(), message.getReceiverName(), message.getContent());
-        }catch (Exception e){
+            server.sendMessage(message);
+        } catch (Exception e) {
             // TODO: try to send this error to client
         }
     }
 
     @Override
-    public void receiveMessage(String senderName, String content) {
-        // TODO: add timestamp to users sent time not server received time
-        Message msg = new Message(senderName, currentUser.getDisplayName(), content, Utilities.getTimestamp());
-        // TODO: write to output
+    public void receiveMessage(Message msg) {
+        try {
+            output.writeObject(msg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
-    public String getDisplayName(){
+    public String getDisplayName() {
         return currentUser.getDisplayName();
     }
 }

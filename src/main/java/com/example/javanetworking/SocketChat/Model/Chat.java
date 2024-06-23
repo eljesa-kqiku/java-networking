@@ -1,6 +1,5 @@
 package com.example.javanetworking.SocketChat.Model;
 
-import java.io.Serial;
 import java.io.Serializable;
 
 public class Chat implements Serializable {

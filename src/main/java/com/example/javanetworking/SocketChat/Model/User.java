@@ -8,6 +8,7 @@ public class User implements Serializable {
     private final String displayName;
     private final String avatar;
     private UserState state;
+
     public User(InetAddress ipAddress, String displayName, String avatar) {
         this.ipAddress = ipAddress;
         this.displayName = displayName;

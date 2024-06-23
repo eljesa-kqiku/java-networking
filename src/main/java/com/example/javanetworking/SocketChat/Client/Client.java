@@ -1,34 +1,34 @@
 package com.example.javanetworking.SocketChat.Client;
 
 import com.example.javanetworking.HelloApplication;
-import com.example.javanetworking.SocketChat.Model.Chat;
-import com.example.javanetworking.SocketChat.Model.FriendInviteStatus;
-import com.example.javanetworking.SocketChat.Model.User;
-import com.example.javanetworking.SocketChat.Model.Utilities;
+import com.example.javanetworking.SocketChat.Model.*;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.URI;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class Client extends Application {
+    private final ChatUI ui = new ChatUI(this);
+    private final ArrayList<Chat> chats = new ArrayList<>();
+    private final ArrayList<User> myFriends = new ArrayList<>();
     private Stage primaryStage;
     private ObjectInputStream input;
     private ObjectOutputStream output;
     private User me;
-    private ChatUI ui = new ChatUI(this);
-    private final ArrayList<Chat> chats = new ArrayList<>();
-    private ArrayList<User> myFriends = new ArrayList<>();
+    private User currentChattingFriend;
+
+    public static void main(String[] args) {
+        launch();
+    }
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -48,7 +48,7 @@ public class Client extends Application {
         primaryStage = stage;
     }
 
-    public void setUser(String userData){
+    public void setUser(String userData) {
         try {
             Socket socket = new Socket("localhost", 8002);
             output = new ObjectOutputStream(socket.getOutputStream());
@@ -67,7 +67,7 @@ public class Client extends Application {
             this.setHandler();
 
             primaryStage.centerOnScreen();
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
             e.printStackTrace();
             StackPane box = new StackPane();
@@ -76,127 +76,139 @@ public class Client extends Application {
         }
     }
 
-    private void setHandler(){
+    private void setHandler() {
         new Thread(() -> {
-            while (true){
+            while (true) {
                 try {
                     // Getting the list of currently existing users on chat
                     Object obj = input.readObject();
-                    if(obj.getClass() == ArrayList.class){
-                        if(((ArrayList<?>) obj).size() > 0){
-                            if(((ArrayList<?>) obj).get(0).getClass() == User.class){
+                    if (obj.getClass() == ArrayList.class) {
+                        if (((ArrayList<?>) obj).size() > 0) {
+                            if (((ArrayList<?>) obj).get(0).getClass() == User.class) {
                                 System.out.print("Fetching available users...");
-                                for (User u: (ArrayList<User>)obj){
+                                for (User u : (ArrayList<User>) obj) {
                                     myFriends.add(u);
                                 }
-                                System.out.println("////////");
                                 showFriends();
                             }
                         }
                     }
                     // New friend joined
-                    if(obj.getClass() == User.class){
+                    if (obj.getClass() == User.class) {
                         System.out.println("A new user joined the chat: " + ((User) obj).getDisplayName());
                         myFriends.add((User) obj);
                         showFriends();
                     }
                     // New/Accepted invitation
-                    if(obj.getClass() == Chat.class){
+                    if (obj.getClass() == Chat.class) {
                         getInvitation((Chat) obj);
                     }
-                    // new message
-
-
+                    // New message
+                    if (obj.getClass() == Message.class) {
+                        showNewMessage((Message) obj);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-        }}  ).start();
+            }
+        }).start();
     }
 
-    public void showFriends(){
+    public void showFriends() {
         ui.showFriends(myFriends);
     }
 
-    public void sendInvitation(String username){
+    public void sendInvitation(String username) {
         System.out.println("Inviting: " + username);
         try {
             Chat newChat = new Chat(me.getDisplayName(), username, Utilities.getTimestamp());
             output.writeObject(newChat);
             chats.add(newChat);
+            this.currentChattingFriend = getFriendByName(username);
             showFriends();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    private void getInvitation(Chat chat){
-        if(Objects.equals(chat.getInitiatorName(), me.getDisplayName())){
+
+    private void getInvitation(Chat chat) {
+        if (Objects.equals(chat.getInitiatorName(), me.getDisplayName())) {
             // existing invite has been accepted
 
             Chat ch = null;
-            for (Chat item : chats){
-                if(item.isRequestAccepted()){
+            for (Chat item : chats) {
+                if (item.isRequestAccepted()) {
                     chats.remove(item);
                 }
-                if(Objects.equals(item.getRequestedName(), chat.getRequestedName()))
-                    ch = item;
+                if (Objects.equals(item.getRequestedName(), chat.getRequestedName())) ch = item;
             }
             ch.acceptInvite(chat.getAcceptTimestamp());
             System.out.println("Your invite has been accepted");
             ui.setActiveChatDetails(Objects.requireNonNull(getFriendByName(chat.getRequestedName())));
-        }else{
+        } else {
             // or new invite has come
             System.out.println("You have a new invite");
             chats.add(chat);
         }
         showFriends();
     }
-    public void acceptInvitation(String username){
+
+    public void acceptInvitation(String username) {
         Chat chat = null;
-        for (Chat item : chats){
-            if(item.isRequestAccepted()){
+        for (Chat item : chats) {
+            if (item.isRequestAccepted()) {
                 chats.remove(item);
             }
-            if(Objects.equals(item.getInitiatorName(), username))
-                chat = item;
+            if (Objects.equals(item.getInitiatorName(), username)) chat = item;
         }
         assert chat != null;
         chat.acceptInvite(Utilities.getTimestamp());
         try {
             output.writeObject(chat);
-            ui.setActiveChatDetails(Objects.requireNonNull(getFriendByName(username)));
+            currentChattingFriend = Objects.requireNonNull(getFriendByName(username));
+            ui.setActiveChatDetails(currentChattingFriend);
             showFriends();
             System.out.println("Invite accepted");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
     }
-    public FriendInviteStatus getInvitationStatus(String username){
+
+    public FriendInviteStatus getInvitationStatus(String username) {
         Chat chat = null;
-        for (Chat exsitingChat : chats){
-            if (Objects.equals(exsitingChat.getInitiatorName(), username) || Objects.equals(exsitingChat.getRequestedName(), username)){
+        for (Chat exsitingChat : chats) {
+            if (Objects.equals(exsitingChat.getInitiatorName(), username) || Objects.equals(exsitingChat.getRequestedName(), username)) {
                 chat = exsitingChat;
             }
         }
-
-        if (chat == null)
-            return FriendInviteStatus.NONE;
-        else if(chat.isRequestAccepted())
+        if (chat == null) return FriendInviteStatus.NONE;
+        else if (chat.isRequestAccepted() && Objects.equals(currentChattingFriend.getDisplayName(), username))
             return FriendInviteStatus.ACCEPTED;
-        else if(Objects.equals(chat.getInitiatorName(), username))
-            return FriendInviteStatus.RECEIVED_PENDING;
-        else
-            return FriendInviteStatus.SENT_PENDING;
+        else if (chat.isRequestAccepted()) return FriendInviteStatus.EXPIRED;
+        else if (Objects.equals(chat.getInitiatorName(), username)) return FriendInviteStatus.RECEIVED_PENDING;
+        else if (Objects.equals(chat.getRequestedName(), username)) return FriendInviteStatus.SENT_PENDING;
+        else return FriendInviteStatus.EXPIRED;
     }
 
-    private User getFriendByName(String displayName){
-        for (User usr : myFriends){
-            if(Objects.equals(usr.getDisplayName(), displayName))
-                return usr;
+    private User getFriendByName(String displayName) {
+        for (User usr : myFriends) {
+            if (Objects.equals(usr.getDisplayName(), displayName)) return usr;
         }
         return null;
     }
 
-    public static void main(String[] args) {
-        launch();
+    public void sendMessage(String content) {
+        Message msg = new Message(me.getDisplayName(), currentChattingFriend.getDisplayName(), content, Utilities.getTimestamp());
+        try {
+            output.writeObject(msg);
+            showNewMessage(msg);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        System.out.println("Sending message");
+    }
+
+    public void showNewMessage(Message msg) {
+        ui.addMessage(msg);
     }
 }

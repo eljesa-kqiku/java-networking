@@ -3,9 +3,9 @@ package com.example.javanetworking.HotelReservations.DatabaseModel;
 import java.util.UUID;
 
 public class Guest {
-    private UUID id;
-    private String firstName;
-    private String lastName;
+    private final UUID id;
+    private final String firstName;
+    private final String lastName;
 
     public Guest(String firstName, String lastName) {
         this.id = UUID.randomUUID();

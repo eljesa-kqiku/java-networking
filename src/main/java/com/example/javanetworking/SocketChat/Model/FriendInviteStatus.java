@@ -4,5 +4,6 @@ public enum FriendInviteStatus {
     NONE,
     SENT_PENDING,
     RECEIVED_PENDING,
-    ACCEPTED
+    ACCEPTED,
+    EXPIRED
 }
