@@ -15,6 +15,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.util.List;
 
@@ -154,11 +155,15 @@ public class ChatUI extends HBox {
                 friendCardContainer.getChildren().add(friendNameLabel);
                 FriendInviteStatus status = controller.getInvitationStatus(friend.getDisplayName());
                 String buttonName = status == FriendInviteStatus.NONE ? "Invite" :
-                        status == FriendInviteStatus.SENT_PENDING ? "Sent" :
+                        status == FriendInviteStatus.SENT_PENDING ? "Busy (Invitation sent)" :
                                 status == FriendInviteStatus.RECEIVED_PENDING ? "Accept" :
                                         status == FriendInviteStatus.ACCEPTED ? "Current" :
                                                 "Disabled";
-                Button invitationButton = new Button(buttonName);
+                Text buttonText = new Text(buttonName);
+                buttonText.setWrappingWidth(100);
+                buttonText.maxWidth(100);
+                Button invitationButton = new Button();
+                invitationButton.setGraphic(buttonText);
                 invitationButton.setPrefWidth(100);
                 invitationButton.setOnAction(ActionEvent -> {
                     if (status == FriendInviteStatus.NONE) {
