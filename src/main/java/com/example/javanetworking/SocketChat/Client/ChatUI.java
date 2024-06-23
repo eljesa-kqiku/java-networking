@@ -3,14 +3,16 @@ package com.example.javanetworking.SocketChat.Client;
 import com.example.javanetworking.HelloApplication;
 import com.example.javanetworking.SocketChat.Model.FriendInviteStatus;
 import com.example.javanetworking.SocketChat.Model.Message;
+import com.example.javanetworking.SocketChat.Model.RoundedImage;
 import com.example.javanetworking.SocketChat.Model.User;
 import javafx.application.Platform;
+import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -76,16 +78,21 @@ public class ChatUI extends HBox {
         messageContainer.setPrefWidth(900);
         messageContainer.setStyle("-fx-padding: 15px;");
         messageContainer.setContent(messages);
+        messageContainer.vvalueProperty().bind(messages.heightProperty());
+
         messages.setSpacing(15);
         // endregion
 
         // region New Message Container
         messageBox.setPromptText("Type your message here");
+        messageBox.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                sendMessage();
+            }
+        });
         sendButton.setStyle("-fx-background-color: #e2f2ef");
         sendButton.setOnAction(_ -> {
-            String msg = messageBox.getText();
-            controller.sendMessage(msg);
-            messageBox.setText("");
+            sendMessage();
         });
         newMessageContainer.getChildren().add(messageBox);
         newMessageContainer.getChildren().add(sendButton);
@@ -99,12 +106,18 @@ public class ChatUI extends HBox {
         // endregion
         // endregion
     }
+    private void sendMessage(){
+        String msg = messageBox.getText();
+        controller.sendMessage(msg);
+        messageBox.setText("");
+        messageBox.requestFocus();
+    }
 
     public void showMyData(User me) {
         userDataContainer.setPrefHeight(100);
         userDataContainer.setStyle(BOX_STYLE);
 
-        ImageView userAvatar = new ImageView(new Image(HelloApplication.class.getResource("chat/avatars/" + me.getAvatar() + ".png").toString(), 70, 70, false, false));
+        RoundedImage userAvatar = new RoundedImage(new Image(HelloApplication.class.getResource("chat/avatars/" + me.getAvatar() + ".png").toString(), 70, 70, false, false));
         userDataContainer.getChildren().add(userAvatar);
         Label userDisplayName = new Label(me.getDisplayName() + " (Me) ");
         userDisplayName.setPrefWidth(200);
@@ -128,8 +141,11 @@ public class ChatUI extends HBox {
                         "-fx-spacing: 15px;" +
                         "-fx-background-color: #ebeae5;");
 
-                ImageView itemAvatar = new ImageView(new Image(HelloApplication.class.getResource("chat/avatars/" + friend.getAvatar() + ".png").toString(), 70, 70, false, false));
+
+                RoundedImage itemAvatar = new RoundedImage(new Image(HelloApplication.class.getResource("chat/avatars/" + friend.getAvatar() + ".png").toString(), 70, 70, false, false));
                 friendCardContainer.getChildren().add(itemAvatar);
+
+
                 Label friendNameLabel = new Label(friend.getDisplayName());
                 friendNameLabel.setPrefWidth(100);
                 friendNameLabel.setStyle(
@@ -162,7 +178,7 @@ public class ChatUI extends HBox {
         Platform.runLater(() -> {
             activeChatDetails.getChildren().clear();
             System.out.println(usr.getAvatar() + " is the avatar ");
-            ImageView activeChatAvatar = new ImageView(new Image(HelloApplication.class.getResource("chat/avatars/" + usr.getAvatar() + ".png").toString(), 70, 70, false, false));
+            RoundedImage activeChatAvatar = new RoundedImage(new Image(HelloApplication.class.getResource("chat/avatars/" + usr.getAvatar() + ".png").toString(), 70, 70, false, false));
             activeChatDetails.getChildren().add(activeChatAvatar);
             Label activeChatFriend = new Label(usr.getDisplayName());
             activeChatFriend.setPrefWidth(800);
