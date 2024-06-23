@@ -62,7 +62,7 @@ public class Database {
     private boolean isRoomAvailable(Date startDate, Date endDate, UUID roomId){
         List<Reservation> sameDateReservations = sameDateReservations(startDate, endDate);
         for (Reservation res : sameDateReservations)
-            if(res.getRoomId().compareTo(roomId) == 0)
+            if(res.getRoomId().equals(roomId))
                 return false;
 
         return true;
@@ -82,7 +82,7 @@ public class Database {
 
         // the rooms of existing reservations should be excluded
         for (Reservation res : sameDateReservations){
-            availableRooms.removeIf(item -> item.getId().compareTo(res.getRoomId()) == 0);
+            availableRooms.removeIf(item -> item.getId().equals(res.getRoomId()));
         }
 
         return availableRooms;
@@ -99,7 +99,6 @@ public class Database {
         ArrayList<Room> availableRooms = this.getAvailableRooms(startDate, endDate);
         LinkedHashMap<RoomType, List<Room>> structuredAvailableRooms = new LinkedHashMap<>();
 
-        System.out.println("available rooms " + availableRooms.size());
         for (RoomType rt : roomTypes) {
             List<Room> avrooms = availableRooms.stream().filter(item -> item.getRoomTypeId().equals(rt.getId())).collect(Collectors.toList());
             if(!avrooms.isEmpty()){

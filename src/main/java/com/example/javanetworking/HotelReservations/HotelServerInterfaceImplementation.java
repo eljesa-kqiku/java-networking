@@ -28,6 +28,5 @@ public class HotelServerInterfaceImplementation extends UnicastRemoteObject impl
         Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("HotelServerInterfaceImplementation", server);
         System.out.println("Chat server started.");
-//        new HotelServerInterfaceImplementation();
     }
 }
