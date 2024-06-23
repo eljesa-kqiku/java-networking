@@ -1,26 +1,27 @@
 package com.example.javanetworking.SocketChat.Model;
 
-import java.net.InetAddress;
+import java.io.Serial;
+import java.io.Serializable;
 
-public class Chat {
-    private final InetAddress initiatorIpAddress;
-    private final InetAddress requestedIpAddress;
+public class Chat implements Serializable {
+    private final String initiatorName;
+    private final String requestedName;
     private boolean requestAccepted;
     private final String requestTimestamp;
     private String acceptTimestamp;
 
-    public Chat(InetAddress initiatorIpAddress, InetAddress requestedIpAddress, String requestTimestamp) {
-        this.initiatorIpAddress = initiatorIpAddress;
-        this.requestedIpAddress = requestedIpAddress;
+    public Chat(String initiatorName, String requestedName, String requestTimestamp) {
+        this.initiatorName = initiatorName;
+        this.requestedName = requestedName;
         this.requestTimestamp = requestTimestamp;
     }
 
-    public InetAddress getInitiatorIpAddress() {
-        return initiatorIpAddress;
+    public String getInitiatorName() {
+        return initiatorName;
     }
 
-    public InetAddress getRequestedIpAddress() {
-        return requestedIpAddress;
+    public String getRequestedName() {
+        return requestedName;
     }
 
     public boolean isRequestAccepted() {

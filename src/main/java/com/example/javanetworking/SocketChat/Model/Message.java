@@ -1,27 +1,26 @@
 package com.example.javanetworking.SocketChat.Model;
 
 import java.io.Serializable;
-import java.net.InetAddress;
 
 public class Message implements Serializable {
-    private final InetAddress senderIpAddress;
-    private final InetAddress receiverIpAddress;
+    private final String senderName;
+    private final String receiverName;
     private final String content;
     private final String timestamp;
 
-    public Message(InetAddress senderIpAddress, InetAddress receiverIpAddress, String content, String timestamp) {
-        this.senderIpAddress = senderIpAddress;
-        this.receiverIpAddress = receiverIpAddress;
+    public Message(String senderName, String receiverName, String content, String timestamp) {
+        this.senderName = senderName;
+        this.receiverName = receiverName;
         this.content = content;
         this.timestamp = timestamp;
     }
 
-    public InetAddress getSenderIpAddress() {
-        return senderIpAddress;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public InetAddress getReceiverIpAddress() {
-        return receiverIpAddress;
+    public String getReceiverName() {
+        return receiverName;
     }
 
     public String getContent() {

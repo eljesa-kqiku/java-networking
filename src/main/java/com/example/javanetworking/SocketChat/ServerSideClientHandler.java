@@ -5,7 +5,6 @@ import com.example.javanetworking.SocketChat.Model.*;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
@@ -28,6 +27,7 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
             try {
                 Object data = input.readObject();
 
+                // Setting user details
                 if(data.getClass() == User.class){
                     setUserData((User) data);
                     ArrayList<User> allOtherUsers = new ArrayList<>();
@@ -36,6 +36,10 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
                             allOtherUsers.add(otherUser);
                     }
                     output.writeObject(allOtherUsers);
+                }
+                // Invitation created/accepted
+                if(data.getClass() == Chat.class){
+                    sendInvitation((Chat) data);
                 }
 
             } catch (IOException e) {
@@ -60,56 +64,44 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
             e.printStackTrace();
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-    // TODO: is this necessary
     @Override
-    public ArrayList<Chat> getInvitations() {
-        if(this.currentUser == null)
-            return null;
-        return server.getInvitations(this.currentUser.getIpAddress());
+    public void sendInvitation(Chat chat) {
+        server.invite(chat);
+    }
+    @Override
+    public void getInvitation(Chat chat) {
+        try {
+            output.writeObject(chat);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void sendInvitation(InetAddress address, String formattedDateTime) {
-        // TODO: read from input
-        server.invite(currentUser.getIpAddress(), address, formattedDateTime);
-    }
 
-    @Override
-    public void acceptInvitation(InetAddress address, String timestamp) {
-        // TODO: read from input
-        server.acceptInvitation(currentUser.getIpAddress(), address, timestamp);
-    }
+
+
+
+
 
     @Override
     public void sendMessage(Message message) {
         try {
             // TODO: read from input
-            server.sendMessage(message.getSenderIpAddress(), message.getReceiverIpAddress(), message.getContent());
+            server.sendMessage(message.getSenderName(), message.getReceiverName(), message.getContent());
         }catch (Exception e){
             // TODO: try to send this error to client
         }
     }
 
     @Override
-    public void receiveMessage(InetAddress senderIp, String content) {
+    public void receiveMessage(String senderName, String content) {
         // TODO: add timestamp to users sent time not server received time
-        Message msg = new Message(senderIp, getIpAddress(), content, Utilities.getTimestamp());
+        Message msg = new Message(senderName, currentUser.getDisplayName(), content, Utilities.getTimestamp());
         // TODO: write to output
     }
 
-    @Override
-    public InetAddress getIpAddress() {
-        return currentUser.getIpAddress();
+
+    public String getDisplayName(){
+        return currentUser.getDisplayName();
     }
 }
