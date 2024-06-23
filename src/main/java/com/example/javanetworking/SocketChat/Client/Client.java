@@ -23,6 +23,8 @@ public class Client extends Application {
     private User me;
     private ChatUI ui = new ChatUI();
 
+    private ArrayList<User> myFriends = new ArrayList<>();
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chat/name-avatar-screen.fxml"));
@@ -79,18 +81,23 @@ public class Client extends Application {
             while (true){
                 try {
                     Object obj = input.readObject();
-                    // new friend joined
                     if(obj.getClass() == ArrayList.class){
                         if(((ArrayList<?>) obj).size() > 0){
                             if(((ArrayList<?>) obj).get(0).getClass() == User.class){
-                                System.out.print("New friend joined");
+                                System.out.print("Fetching available users...");
                                 for (User u: (ArrayList<User>)obj){
-                                    System.out.print(u.getDisplayName() + ", ");
+                                    myFriends.add(u);
                                 }
                                 System.out.println("////////");
-                                showFriends((ArrayList<User>) obj);
+                                showFriends(myFriends);
                             }
                         }
+                    }
+                    // new friend joined
+                    if(obj.getClass() == User.class){
+                        System.out.println("A new user joined the chat: " + ((User) obj).getDisplayName());
+                        myFriends.add((User) obj);
+                        showFriends(myFriends);
                     }
                     // new invitation
                     // new message

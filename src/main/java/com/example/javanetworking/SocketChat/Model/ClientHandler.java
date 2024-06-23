@@ -13,6 +13,6 @@ public interface ClientHandler {
     void acceptInvitation(InetAddress address, String timestamp);
     void sendMessage (Message message);
     void receiveMessage(InetAddress senderIp, String content);
-    void updateFriendList(ArrayList<User> friends);
+    void updateFriendList(User friends);
     InetAddress getIpAddress();
 }

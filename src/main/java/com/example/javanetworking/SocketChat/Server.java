@@ -24,7 +24,7 @@ public class Server {
                         try {
                             ServerSideClientHandler handler = new ServerSideClientHandler(socket, this);
                             System.out.println(STR."A new user joined:\{socket.getInetAddress()}");
-//                            clientHandlers.removeIf(existing_user -> existing_user.getIpAddress() == socket.getInetAddress());
+                            // clientHandlers.removeIf(existing_user -> existing_user.getIpAddress() == socket.getInetAddress());
                             clientHandlers.add(handler);
                             handler.run();
                         } catch (IOException e) {
@@ -40,19 +40,17 @@ public class Server {
     }
     public void setUser(User user){
 //        users.removeIf(existing_user -> existing_user.getIpAddress() == user.getIpAddress());
+        updateAllFriendLists(user);
         users.add(user);
-        updateAllFriendLists();
     }
     public ArrayList<User> getUsers(){
         return this.users;
     }
 
-    private void updateAllFriendLists(){
-        System.out.println(clientHandlers.size());
-        System.out.println(users.size());
+    private void updateAllFriendLists(User user){
+        System.out.println("Updating friends list " + user.getDisplayName());
         for (ClientHandler u : clientHandlers){
-            System.out.println("update friends list " + users.size());
-            u.updateFriendList(users);
+            u.updateFriendList(user);
         }
     }
 

@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 public class ServerSideClientHandler implements ClientHandler, Runnable{
     private final Server server;
@@ -29,6 +30,12 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
 
                 if(data.getClass() == User.class){
                     setUserData((User) data);
+                    ArrayList<User> allOtherUsers = new ArrayList<>();
+                    for(User otherUser : server.getUsers()){
+                        if(!otherUser.getDisplayName().equals(currentUser.getDisplayName()))
+                            allOtherUsers.add(otherUser);
+                    }
+                    output.writeObject(allOtherUsers);
                 }
 
             } catch (IOException e) {
@@ -36,7 +43,6 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
             } catch (ClassNotFoundException e) {
                 throw new RuntimeException(e);
             }
-
         }
     }
 
@@ -46,10 +52,10 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
         server.setUser(userData);
     }
 
-    public void updateFriendList(ArrayList<User> friends){
+    public void updateFriendList(User newUser){
         try{
-            System.out.println("update friends in handler");
-            output.writeObject(friends);
+            if(!newUser.getDisplayName().equals(currentUser.getDisplayName()))
+                output.writeObject(newUser);
         }catch (Exception e){
             e.printStackTrace();
         }
