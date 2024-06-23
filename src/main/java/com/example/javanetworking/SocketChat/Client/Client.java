@@ -13,11 +13,16 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Client extends Application {
-    Stage primaryStage;
-    ObjectInputStream input;
-    ObjectOutputStream output;
+    private Stage primaryStage;
+    private ObjectInputStream input;
+    private ObjectOutputStream output;
+    private User me;
+    private ChatUI ui = new ChatUI();
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chat/name-avatar-screen.fxml"));
@@ -37,37 +42,64 @@ public class Client extends Application {
     }
 
     public void setUser(String userData){
-        System.out.println(userData);
         try {
             Socket socket = new Socket("localhost", 8002);
             output = new ObjectOutputStream(socket.getOutputStream());
             input = new ObjectInputStream(socket.getInputStream());
-            output.writeObject(new User(socket.getInetAddress(), userData.split(" | ")[0], userData.split(" | ")[1]));
+            String[] myData = userData.split("-");
+            me = new User(socket.getInetAddress(), myData[0].trim(), myData[1].trim());
+            output.writeObject(me);
+
             StackPane box = new StackPane();
             Label connectionInfo = new Label("Connected. Fetching data.");
             box.getChildren().add(connectionInfo);
             primaryStage.setScene(new Scene(box, 800, 800));
 
-            // below Thread.sleep is just used to simulate connection delay on remote servers
-            Platform.runLater(() -> {
-                try {
-                    Thread.sleep(2000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-                connectionInfo.setText("other users: ");
-                setHandler();
-            });
+            primaryStage.setScene(new Scene(ui, 1200, 900));
+            ui.showMyData(me);
+            this.setHandler();
+
+            primaryStage.centerOnScreen();
         }catch (Exception e){
             System.out.println(e);
-            VBox box = new VBox();
+            e.printStackTrace();
+            StackPane box = new StackPane();
             box.getChildren().add(new Label("Couldn't connect to server"));
             primaryStage.setScene(new Scene(box, 400, 400));
         }
     }
+    public void showFriends(ArrayList<User> friends){
+        // TODO: fix ip address
+//        List<User> filteredFriends = friends.stream().filter(i -> i.getIpAddress() != me.getIpAddress()).toList();
+        ui.showFriends(friends);
+    }
 
     private void setHandler(){
-        // read logic
+        new Thread(() -> {
+            while (true){
+                try {
+                    Object obj = input.readObject();
+                    // new friend joined
+                    if(obj.getClass() == ArrayList.class){
+                        if(((ArrayList<?>) obj).size() > 0){
+                            if(((ArrayList<?>) obj).get(0).getClass() == User.class){
+                                System.out.print("New friend joined");
+                                for (User u: (ArrayList<User>)obj){
+                                    System.out.print(u.getDisplayName() + ", ");
+                                }
+                                System.out.println("////////");
+                                showFriends((ArrayList<User>) obj);
+                            }
+                        }
+                    }
+                    // new invitation
+                    // new message
+
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+        }}  ).start();
     }
 
     public static void main(String[] args) {

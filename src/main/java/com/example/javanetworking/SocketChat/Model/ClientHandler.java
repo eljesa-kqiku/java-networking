@@ -8,10 +8,11 @@ import java.util.ArrayList;
 
 public interface ClientHandler {
     void setUserData(User userData);
-    ArrayList<User> getInvitations();
+    ArrayList<Chat> getInvitations();
     void sendInvitation(InetAddress address, String formattedDatetime);
     void acceptInvitation(InetAddress address, String timestamp);
     void sendMessage (Message message);
     void receiveMessage(InetAddress senderIp, String content);
+    void updateFriendList(ArrayList<User> friends);
     InetAddress getIpAddress();
 }

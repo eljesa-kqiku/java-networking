@@ -50,7 +50,7 @@ public class NewUserUIControler {
     protected void onSubmit() {
         if(displayName.getText().isEmpty())
             return;
-        controller.setUser(STR."\{displayName.getText()} | \{selectedAvatar}");
+        controller.setUser(STR."\{displayName.getText()} - \{selectedAvatar}");
     }
     @FXML
     protected void setSelectedAvatar(MouseEvent e){

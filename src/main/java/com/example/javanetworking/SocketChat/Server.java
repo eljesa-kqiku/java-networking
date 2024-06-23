@@ -24,6 +24,7 @@ public class Server {
                         try {
                             ServerSideClientHandler handler = new ServerSideClientHandler(socket, this);
                             System.out.println(STR."A new user joined:\{socket.getInetAddress()}");
+//                            clientHandlers.removeIf(existing_user -> existing_user.getIpAddress() == socket.getInetAddress());
                             clientHandlers.add(handler);
                             handler.run();
                         } catch (IOException e) {
@@ -37,6 +38,35 @@ public class Server {
             }
         }).start();
     }
+    public void setUser(User user){
+//        users.removeIf(existing_user -> existing_user.getIpAddress() == user.getIpAddress());
+        users.add(user);
+        updateAllFriendLists();
+    }
+    public ArrayList<User> getUsers(){
+        return this.users;
+    }
+
+    private void updateAllFriendLists(){
+        System.out.println(clientHandlers.size());
+        System.out.println(users.size());
+        for (ClientHandler u : clientHandlers){
+            System.out.println("update friends list " + users.size());
+            u.updateFriendList(users);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
     private User getUserByIp(InetAddress address){
         for (User usr : users){
             if(usr.getIpAddress() == address)
@@ -44,16 +74,12 @@ public class Server {
         }
         return null;
     }
-    public void setUser(User user){
-        users.removeIf(existing_user -> existing_user.getIpAddress() == user.getIpAddress());
-        users.add(user);
-        System.out.println(users.get(0).getDisplayName());
-    }
-    public ArrayList<User> getInvitations(InetAddress address){
-        ArrayList<User> invitations = new ArrayList<>();
+
+    public ArrayList<Chat> getInvitations(InetAddress address){
+        ArrayList<Chat> invitations = new ArrayList<>();
         for (Chat chat: chats){
             if(chat.isRequestAccepted() && chat.getRequestedIpAddress().getHostAddress() == address.getHostAddress()){
-                invitations.add(getUserByIp(chat.getInitiatorIpAddress()));
+                invitations.add(chat);
             }
         }
         return invitations;

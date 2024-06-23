@@ -41,7 +41,7 @@ public class ClientController {
 
     @FXML
     public void onReadFile() {
-        System.out.println("read file is invoked");
+        System.out.println("Read file is invoked");
         try {
             String fileContent = parent.readFromFile();
             textInput.setText(fileContent);

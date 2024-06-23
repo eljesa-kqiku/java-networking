@@ -1,9 +1,6 @@
 package com.example.javanetworking.SocketChat;
 
-import com.example.javanetworking.SocketChat.Model.ClientHandler;
-import com.example.javanetworking.SocketChat.Model.Message;
-import com.example.javanetworking.SocketChat.Model.User;
-import com.example.javanetworking.SocketChat.Model.Utilities;
+import com.example.javanetworking.SocketChat.Model.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -49,9 +46,28 @@ public class ServerSideClientHandler implements ClientHandler, Runnable{
         server.setUser(userData);
     }
 
+    public void updateFriendList(ArrayList<User> friends){
+        try{
+            System.out.println("update friends in handler");
+            output.writeObject(friends);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
     // TODO: is this necessary
     @Override
-    public ArrayList<User> getInvitations() {
+    public ArrayList<Chat> getInvitations() {
         if(this.currentUser == null)
             return null;
         return server.getInvitations(this.currentUser.getIpAddress());

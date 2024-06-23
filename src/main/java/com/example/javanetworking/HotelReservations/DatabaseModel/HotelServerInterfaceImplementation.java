@@ -16,4 +16,8 @@ public class HotelServerInterfaceImplementation extends UnicastRemoteObject impl
     public void createReservation(String first_name, String last_name, String roomNumber, Date startDate, Date endDate) throws RemoteException {
         database.createReservation(first_name, last_name, roomNumber, startDate, endDate);
     }
+
+    public static void main(String[] args) throws RemoteException {
+        new HotelServerInterfaceImplementation();
+    }
 }
