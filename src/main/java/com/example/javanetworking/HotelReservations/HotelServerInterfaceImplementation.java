@@ -1,4 +1,8 @@
-package com.example.javanetworking.HotelReservations.DatabaseModel;
+package com.example.javanetworking.HotelReservations;
+
+import com.example.javanetworking.HotelReservations.DatabaseModel.Database;
+import com.example.javanetworking.HotelReservations.DatabaseModel.Room;
+import com.example.javanetworking.HotelReservations.DatabaseModel.RoomType;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;

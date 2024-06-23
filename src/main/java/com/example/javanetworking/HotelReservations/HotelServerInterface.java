@@ -1,4 +1,4 @@
-package com.example.javanetworking.HotelReservations.DatabaseModel;
+package com.example.javanetworking.HotelReservations;
 
 import com.example.javanetworking.HotelReservations.DatabaseModel.Room;
 import com.example.javanetworking.HotelReservations.DatabaseModel.RoomType;

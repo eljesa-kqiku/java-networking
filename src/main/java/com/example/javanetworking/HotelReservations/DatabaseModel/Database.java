@@ -22,15 +22,15 @@ public class Database {
         // region Rooms
             rooms = new ArrayList<>();
             for (int i = 0; i < 10; i++)
-                rooms.add(new Room(roomTypes.get(0).getId(), 10 + "i"));
+                rooms.add(new Room(roomTypes.get(0).getId(), "10" + i));
             for (int i = 0; i < 20; i++)
-                rooms.add(new Room(roomTypes.get(1).getId(), 20 + "i"));
+                rooms.add(new Room(roomTypes.get(1).getId(), "20" + i));
             for (int i = 0; i < 5; i++)
-                rooms.add(new Room(roomTypes.get(2).getId(), 30 + "i"));
+                rooms.add(new Room(roomTypes.get(2).getId(), "30" + i));
             for (int i = 0; i < 3; i++)
-                rooms.add(new Room(roomTypes.get(3).getId(), 40 + "i"));
+                rooms.add(new Room(roomTypes.get(3).getId(), "40" + i));
             for (int i = 0; i < 2; i++)
-                rooms.add(new Room(roomTypes.get(4).getId(), 50 + "i"));
+                rooms.add(new Room(roomTypes.get(4).getId(), "50" + i));
         // endregion
 
         reservations = new ArrayList<>();

@@ -1,9 +1,13 @@
-package com.example.javanetworking.HotelReservations.DatabaseModel;
+package com.example.javanetworking.HotelReservations;
+
+import com.example.javanetworking.HotelReservations.DatabaseModel.Room;
+import com.example.javanetworking.HotelReservations.DatabaseModel.RoomType;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Client {
     public static void main(String[] args) throws RemoteException {
@@ -32,12 +36,11 @@ public class Client {
             System.out.println("\n\nThe list of available room types on selected dates: \n");
             System.out.println("-------------------------------------------");
             Map<RoomType, List<Room>> availableRooms = server.getAvailableRooms(startDate, endDate);
-            System.out.println(availableRooms.size());
             for (RoomType rt : availableRooms.keySet()){
                 List<Room> rooms = availableRooms.get(rt);
                 System.out.println(rt.getName());
                 System.out.println(rt.getDescription());
-                System.out.println("Available rooms(" + rooms.size() + "): " + rooms.stream().map(Room::getName));
+                System.out.println("Available rooms(" + rooms.size() + "): " + rooms.stream().map(Room::getName).collect(Collectors.joining(",")));
                 System.out.println("Number of people: " + rt.getNumPersons());
                 System.out.println("Price: " + rt.getPrice() + '\u20ac');
                 System.out.println("-------------------------------------------");

@@ -21,4 +21,6 @@ module com.example.javanetworking {
 //    opens com.example.javanetworking.HotelReservations to javafx.fxml;
     exports com.example.javanetworking.HotelReservations.DatabaseModel;
     opens com.example.javanetworking.HotelReservations.DatabaseModel to javafx.fxml;
+    exports com.example.javanetworking.HotelReservations;
+    opens com.example.javanetworking.HotelReservations to javafx.fxml;
 }
