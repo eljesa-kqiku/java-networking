@@ -6,6 +6,9 @@ import java.rmi.registry.Registry;
 import java.util.*;
 
 public class Client {
+    public static void main(String[] args) throws RemoteException {
+        new Client();
+    }
     private HotelServerInterface server;
     Scanner scanner;
 
@@ -29,6 +32,7 @@ public class Client {
             System.out.println("\n\nThe list of available room types on selected dates: \n");
             System.out.println("-------------------------------------------");
             Map<RoomType, List<Room>> availableRooms = server.getAvailableRooms(startDate, endDate);
+            System.out.println(availableRooms.size());
             for (RoomType rt : availableRooms.keySet()){
                 List<Room> rooms = availableRooms.get(rt);
                 System.out.println(rt.getName());
@@ -55,7 +59,7 @@ public class Client {
     protected void initializeRMI(){
         String host = "";
         try{
-            Registry registry = LocateRegistry.getRegistry(host);
+            Registry registry = LocateRegistry.getRegistry("localhost", 1099);
             server = (HotelServerInterface) registry.lookup("HotelServerInterfaceImplementation");
             System.out.println("Server object" + server + " found.");
         }catch (Exception e){

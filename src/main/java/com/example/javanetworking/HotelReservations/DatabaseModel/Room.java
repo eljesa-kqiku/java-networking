@@ -1,8 +1,9 @@
 package com.example.javanetworking.HotelReservations.DatabaseModel;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class Room {
+public class Room implements Serializable {
     private final UUID id;
     private final UUID roomTypeId;
     private final String name;

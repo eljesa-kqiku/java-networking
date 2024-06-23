@@ -99,13 +99,13 @@ public class Database {
         ArrayList<Room> availableRooms = this.getAvailableRooms(startDate, endDate);
         LinkedHashMap<RoomType, List<Room>> structuredAvailableRooms = new LinkedHashMap<>();
 
+        System.out.println("available rooms " + availableRooms.size());
         for (RoomType rt : roomTypes) {
-            List<Room> rooms = availableRooms.stream().filter(item -> item.getId().compareTo(rt.getId()) == 0).collect(Collectors.toList());
-            if(!rooms.isEmpty()){
-                structuredAvailableRooms.put(rt, rooms);
+            List<Room> avrooms = availableRooms.stream().filter(item -> item.getRoomTypeId().equals(rt.getId())).collect(Collectors.toList());
+            if(!avrooms.isEmpty()){
+                structuredAvailableRooms.put(rt, avrooms);
             }
         }
-
         return structuredAvailableRooms;
     }
 

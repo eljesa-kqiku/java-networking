@@ -1,6 +1,8 @@
 package com.example.javanetworking.HotelReservations.DatabaseModel;
 
 import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.*;
 
@@ -18,6 +20,10 @@ public class HotelServerInterfaceImplementation extends UnicastRemoteObject impl
     }
 
     public static void main(String[] args) throws RemoteException {
-        new HotelServerInterfaceImplementation();
+        HotelServerInterfaceImplementation server = new HotelServerInterfaceImplementation();
+        Registry registry = LocateRegistry.createRegistry(1099);
+        registry.rebind("HotelServerInterfaceImplementation", server);
+        System.out.println("Chat server started.");
+//        new HotelServerInterfaceImplementation();
     }
 }
