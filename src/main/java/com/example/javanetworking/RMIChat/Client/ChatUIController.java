@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class ChatUI extends HBox {
+public class ChatUIController extends HBox {
     VBox sidePanel = new VBox();
     HBox userDataContainer = new HBox();
     VBox friendsListContainer = new VBox();
@@ -29,7 +29,7 @@ public class ChatUI extends HBox {
     TextField messageBox = new TextField();
     Button sendButton = new Button("Send");
     VBox messages = new VBox();
-    ClientUIController controller;
+    ClientMain controller;
     private final String NO_SPACING_BOX_STYLE =
             "-fx-border-color: black; " +
                     "-fx-border-width: 1px;" +
@@ -41,7 +41,7 @@ public class ChatUI extends HBox {
                     "-fx-spacing: 15px;" +
                     "-fx-background-color: #e2f2ef;";
 
-    public ChatUI(ClientUIController controller) {
+    public ChatUIController(ClientMain controller) {
         super();
         this.controller = controller;
         this.buildChatUI();

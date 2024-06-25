@@ -13,15 +13,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ClientUIController extends Application {
-    private final ChatUI ui = new ChatUI(this);
+public class ClientMain extends Application {
+    private final ChatUIController ui = new ChatUIController(this);
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<User> myFriends = new ArrayList<>();
     private Stage primaryStage;
     private User me;
     private User currentChattingFriend;
 
-    private ClientLogic controller;
+    private ServerConnection controller;
 
     public static void main(String[] args) {
         launch();
@@ -32,7 +32,7 @@ public class ClientUIController extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chat/name-avatar-screen-rmi.fxml"));
         fxmlLoader.setControllerFactory(controllerClass -> {
             try {
-                return controllerClass.getConstructor(ClientUIController.class).newInstance(this);
+                return controllerClass.getConstructor(ClientMain.class).newInstance(this);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -51,7 +51,7 @@ public class ClientUIController extends Application {
 
     public void setUser(String userData) {
         try {
-            controller = new ClientLogic(this);
+            controller = new ServerConnection(this);
 
             String[] myData = userData.split("-");
             me = new User(myData[0].trim(), myData[1].trim());
@@ -135,7 +135,7 @@ public class ClientUIController extends Application {
             if (item.isRequestAccepted()) {
                 chats.remove(item);
             }
-            if (Objects.equals(item.getInitiatorName(), username)) chat = item;
+            if (Objects.equals(item.getInitiatorName(), username) || Objects.equals(item.getRequestedName(), username)) chat = item;
         }
         assert chat != null;
         chat.acceptInvite(Utilities.getTimestamp());

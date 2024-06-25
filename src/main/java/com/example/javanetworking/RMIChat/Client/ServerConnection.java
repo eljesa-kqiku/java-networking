@@ -9,11 +9,11 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 
-public class ClientLogic extends UnicastRemoteObject implements ClientInterface {
+public class ServerConnection extends UnicastRemoteObject implements ClientInterface {
     public ServerInterface server;
-    private final ClientUIController uiController;
+    private final ClientMain uiController;
 
-    protected ClientLogic(ClientUIController uiController) throws RemoteException, NotBoundException {
+    protected ServerConnection(ClientMain uiController) throws RemoteException, NotBoundException {
         Registry registry = LocateRegistry.getRegistry("localhost", 1338);
         server = (ServerInterface) registry.lookup("Server");
         this.uiController = uiController;

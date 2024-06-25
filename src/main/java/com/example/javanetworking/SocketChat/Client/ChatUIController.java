@@ -6,7 +6,6 @@ import com.example.javanetworking.SocketChat.Model.Message;
 import com.example.javanetworking.SocketChat.Model.RoundedImage;
 import com.example.javanetworking.SocketChat.Model.User;
 import javafx.application.Platform;
-import javafx.geometry.NodeOrientation;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,7 +18,7 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
-public class ChatUI extends HBox {
+public class ChatUIController extends HBox {
     VBox sidePanel = new VBox();
     HBox userDataContainer = new HBox();
     VBox friendsListContainer = new VBox();
@@ -30,7 +29,7 @@ public class ChatUI extends HBox {
     TextField messageBox = new TextField();
     Button sendButton = new Button("Send");
     VBox messages = new VBox();
-    Client controller;
+    ClientMain controller;
     private final String NO_SPACING_BOX_STYLE =
             "-fx-border-color: black; " +
                     "-fx-border-width: 1px;" +
@@ -42,7 +41,7 @@ public class ChatUI extends HBox {
                     "-fx-spacing: 15px;" +
                     "-fx-background-color: #e2f2ef;";
 
-    public ChatUI(Client controller) {
+    public ChatUIController(ClientMain controller) {
         super();
         this.controller = controller;
         this.buildChatUI();

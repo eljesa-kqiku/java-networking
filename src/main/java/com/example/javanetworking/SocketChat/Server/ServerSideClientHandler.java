@@ -4,7 +4,6 @@ import com.example.javanetworking.SocketChat.Model.Chat;
 import com.example.javanetworking.SocketChat.Model.ClientHandler;
 import com.example.javanetworking.SocketChat.Model.Message;
 import com.example.javanetworking.SocketChat.Model.User;
-import com.example.javanetworking.SocketChat.Server.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,13 +12,13 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ServerSideClientHandler implements ClientHandler, Runnable {
-    private final Server server;
+    private final ServerMain server;
     private final ObjectInputStream input;
     private final ObjectOutputStream output;
     private final Socket socket;
     private User currentUser;
 
-    public ServerSideClientHandler(Socket socket, Server server) throws IOException {
+    public ServerSideClientHandler(Socket socket, ServerMain server) throws IOException {
         this.socket = socket;
         this.server = server;
         this.input = new ObjectInputStream(socket.getInputStream());

@@ -6,8 +6,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
-public class NewUserUIControler {
-    private final Client controller;
+public class NewUserUIController {
+    private final ClientMain controller;
     private final DropShadow dropShadow = new DropShadow();
     private String selectedAvatar = "1";
     @FXML
@@ -17,7 +17,7 @@ public class NewUserUIControler {
 
     private final ImageView[] buttons = new ImageView[15];
 
-    public NewUserUIControler(Client c) {
+    public NewUserUIController(ClientMain c) {
         this.controller = c;
     }
 

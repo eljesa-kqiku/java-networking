@@ -16,8 +16,8 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Client extends Application {
-    private final ChatUI ui = new ChatUI(this);
+public class ClientMain extends Application {
+    private final ChatUIController ui = new ChatUIController(this);
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<User> myFriends = new ArrayList<>();
     private Stage primaryStage;
@@ -35,7 +35,7 @@ public class Client extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("chat/name-avatar-screen.fxml"));
         fxmlLoader.setControllerFactory(controllerClass -> {
             try {
-                return controllerClass.getConstructor(Client.class).newInstance(this);
+                return controllerClass.getConstructor(ClientMain.class).newInstance(this);
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
@@ -160,7 +160,7 @@ public class Client extends Application {
             if (item.isRequestAccepted()) {
                 chats.remove(item);
             }
-            if (Objects.equals(item.getInitiatorName(), username)) chat = item;
+            if (Objects.equals(item.getInitiatorName(), username) || Objects.equals(item.getRequestedName(), username)) chat = item;
         }
         assert chat != null;
         chat.acceptInvite(Utilities.getTimestamp());

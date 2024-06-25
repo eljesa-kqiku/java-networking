@@ -11,7 +11,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Server {
+public class ServerMain {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
@@ -121,6 +121,6 @@ public class Server {
     }
 
     public static void main(String[] args) throws IOException {
-        new Server().start();
+        new ServerMain().start();
     }
 }
