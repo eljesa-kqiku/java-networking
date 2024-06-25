@@ -106,7 +106,8 @@ public class ChatUI extends HBox {
         // endregion
         // endregion
     }
-    private void sendMessage(){
+
+    private void sendMessage() {
         String msg = messageBox.getText();
         controller.sendMessage(msg);
         messageBox.setText("");

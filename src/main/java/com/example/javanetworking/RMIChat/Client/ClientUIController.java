@@ -10,16 +10,10 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.rmi.Remote;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class ClientUIController extends Application{
+public class ClientUIController extends Application {
     private final ChatUI ui = new ChatUI(this);
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<User> myFriends = new ArrayList<>();
@@ -50,7 +44,8 @@ public class ClientUIController extends Application{
         stage.show();
         primaryStage = stage;
     }
-    public String getName(){
+
+    public String getName() {
         return me.getDisplayName();
     }
 
@@ -80,14 +75,16 @@ public class ClientUIController extends Application{
             primaryStage.setScene(new Scene(box, 400, 400));
         }
     }
-    public void updateListOfFriends(ArrayList<User> friends){
+
+    public void updateListOfFriends(ArrayList<User> friends) {
         System.out.print("Fetching available users...");
         for (User u : friends) {
             myFriends.add(u);
         }
         showFriends();
     }
-    public void newFriend(User user){
+
+    public void newFriend(User user) {
         System.out.println("A new user joined the chat: " + user.getDisplayName());
         myFriends.add(user);
         showFriends();

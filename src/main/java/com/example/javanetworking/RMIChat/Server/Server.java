@@ -1,29 +1,21 @@
 package com.example.javanetworking.RMIChat.Server;
 
-import com.example.javanetworking.RMIChat.Client.ClientInterface;
-import com.example.javanetworking.RMIChat.Model.Chat;
-import com.example.javanetworking.RMIChat.Model.Message;
-import com.example.javanetworking.RMIChat.Model.User;
+import com.example.javanetworking.RMIChat.Model.*;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-public class Server extends UnicastRemoteObject implements ServerInterface{
+import java.util.Objects;
+
+public class Server extends UnicastRemoteObject implements ServerInterface {
     private final ArrayList<User> users = new ArrayList<>();
     private final ArrayList<Chat> chats = new ArrayList<>();
     private final ArrayList<ClientInterface> clients = new ArrayList<>();
 
-    protected Server() throws RemoteException {}
+    protected Server() throws RemoteException {
+    }
 
     public synchronized void setUser(User user, ClientInterface i) throws RemoteException {
         updateAllFriendLists(user);
@@ -56,7 +48,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface{
         // if no invitation existed before add it and notify the other user
         chats.add(newChat);
         ClientInterface initiatorHandler = getHandlerByName(newChat.getRequestedName());
-        if(initiatorHandler != null)
+        if (initiatorHandler != null)
             initiatorHandler.getInvitation(newChat);
     }
 
@@ -94,7 +86,7 @@ public class Server extends UnicastRemoteObject implements ServerInterface{
         return null;
     }
 
-    public static void main(String[] args){
+    public static void main(String[] args) {
         try {
             ServerInterface server = new Server();
             Registry registry = LocateRegistry.createRegistry(1338);

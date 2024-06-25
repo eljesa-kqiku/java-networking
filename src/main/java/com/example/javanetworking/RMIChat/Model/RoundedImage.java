@@ -5,7 +5,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
 
 public class RoundedImage extends ImageView {
-    public RoundedImage(Image img){
+    public RoundedImage(Image img) {
         super(img);
 
         // Set the size of the ImageView
