@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javanetworking.RMIChat.Client.NewUserUIControler">
+    <children>
+        <HBox prefHeight="100.0" prefWidth="200.0" style="-fx-alignment: center; -fx-padding: 30px 20px 10px; -fx-background-color: #0a0e0f;">
+            <children>
+                <Label style="-fx-font-size: 24px; -fx-text-fill: white; -fx-font-weight: bold;" text="Welcome to SocketChat!" />
+            </children>
+        </HBox>
+        <VBox prefHeight="200.0" prefWidth="278.0" spacing="20.0" style="-fx-alignment: center; -fx-padding: 10px; -fx-background-color: #0a0e0f;">
+            <children>
+                <Label style="-fx-text-fill: white;" text="Pick your avatar" />
+                <GridPane hgap="10.0" maxHeight="170.0" maxWidth="290.0" minHeight="170.0" minWidth="290.0" prefHeight="170.0" prefWidth="290.0" style="-fx-border-insets: 10px;" vgap="10.0" VBox.vgrow="NEVER">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="10.0" prefWidth="50.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+                        <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
+                    </rowConstraints>
+                    <children>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                            <children>
+                                <ImageView fx:id="av1" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/1.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                            <children>
+                                <ImageView fx:id="av2" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/2.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="0" GridPane.columnIndex="2">
+                            <children>
+                                <ImageView fx:id="av3" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/3.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="0" GridPane.columnIndex="3">
+                            <children>
+                                <ImageView fx:id="av4" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/4.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="0" GridPane.columnIndex="4">
+                            <children>
+                                <ImageView fx:id="av5" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/5.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                            <children>
+                                <ImageView fx:id="av6" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/6.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                            <children>
+                                <ImageView fx:id="av7" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/7.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="1" GridPane.columnIndex="2">
+                            <children>
+                                <ImageView fx:id="av8" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/8.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="1" GridPane.columnIndex="3">
+                            <children>
+                                <ImageView fx:id="av9" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/9.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="1" GridPane.columnIndex="4">
+                            <children>
+                                <ImageView fx:id="av10" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/10.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="2" GridPane.columnIndex="0">
+                            <children>
+                                <ImageView fx:id="av11" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/11.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="2" GridPane.columnIndex="1">
+                            <children>
+                                <ImageView fx:id="av12" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/12.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="2" GridPane.columnIndex="2">
+                            <children>
+                                <ImageView fx:id="av13" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/13.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="2" GridPane.columnIndex="3">
+                            <children>
+                                <ImageView fx:id="av14" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/14.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                        <StackPane prefHeight="50.0" prefWidth="50.0" style="-fx-border-radius: 50;" GridPane.rowIndex="2" GridPane.columnIndex="4">
+                            <children>
+                                <ImageView fx:id="av15" onMouseClicked="#setSelectedAvatar" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true" >
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                    <image>
+                                        <Image url="@avatars/15.png" />
+                                    </image>
+                                </ImageView>
+                            </children>
+                        </StackPane>
+                    </children>
+                </GridPane>
+            </children>
+        </VBox>
+        <HBox prefHeight="100.0" prefWidth="200.0" spacing="20.0" style="-fx-alignment: center; -fx-padding: 10px 20px 30px; -fx-background-color: #0a0e0f;">
+            <children>
+                <TextField fx:id="displayName" minWidth="220.0" promptText="Enter Display Name" />
+                <Button mnemonicParsing="false" onAction="#onSubmit" style="-fx-background-color: #369bb0; -fx-text-fill: white;" text="Save" />
+            </children>
+        </HBox>
+    </children>
+</VBox>

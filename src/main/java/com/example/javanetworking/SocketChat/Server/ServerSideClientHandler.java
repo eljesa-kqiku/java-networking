@@ -1,9 +1,10 @@
-package com.example.javanetworking.SocketChat;
+package com.example.javanetworking.SocketChat.Server;
 
 import com.example.javanetworking.SocketChat.Model.Chat;
 import com.example.javanetworking.SocketChat.Model.ClientHandler;
 import com.example.javanetworking.SocketChat.Model.Message;
 import com.example.javanetworking.SocketChat.Model.User;
+import com.example.javanetworking.SocketChat.Server.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -91,7 +92,7 @@ public class ServerSideClientHandler implements ClientHandler, Runnable {
         try {
             server.sendMessage(message);
         } catch (Exception e) {
-            // TODO: try to send this error to client
+            e.printStackTrace();
         }
     }
 

@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 import java.util.*;
 
 public interface HotelServerInterface extends Remote {
-    public Map<RoomType, List<Room>> getAvailableRooms(Date startDate, Date endDate) throws RemoteException;
-    public void createReservation(String first_name, String last_name, String roomNumber, Date startDate, Date endDate) throws RemoteException;
+    Map<RoomType, List<Room>> getAvailableRooms(Date startDate, Date endDate) throws RemoteException;
+    void createReservation(String first_name, String last_name, String roomNumber, Date startDate, Date endDate) throws RemoteException;
 }
 

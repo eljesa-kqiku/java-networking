@@ -1,4 +1,4 @@
-package com.example.javanetworking.SocketChat;
+package com.example.javanetworking.SocketChat.Server;
 
 import com.example.javanetworking.SocketChat.Model.Chat;
 import com.example.javanetworking.SocketChat.Model.ClientHandler;
