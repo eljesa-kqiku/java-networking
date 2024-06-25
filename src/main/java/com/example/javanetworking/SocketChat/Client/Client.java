@@ -150,9 +150,6 @@ public class Client extends Application {
             System.out.println("You have a new invite");
             chats.add(chat);
 
-            if(currentChattingFriend == null){
-                acceptInvitation(chat.getInitiatorName());
-            }
         }
         showFriends();
     }

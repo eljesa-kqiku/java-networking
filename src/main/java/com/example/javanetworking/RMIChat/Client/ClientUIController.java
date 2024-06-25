@@ -128,10 +128,6 @@ public class ClientUIController extends Application{
             // or new invite has come
             System.out.println("You have a new invite");
             chats.add(chat);
-
-            if(currentChattingFriend == null){
-                acceptInvitation(chat.getInitiatorName());
-            }
         }
         showFriends();
     }
