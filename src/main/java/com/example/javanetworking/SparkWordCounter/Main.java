@@ -1,79 +1,49 @@
-//package com.example.javanetworking.SparkWordCounter;
-//
-//import java.util.Arrays;
-//import java.util.Iterator;
-//
+
+// Shenim !!!!!
+// Kjo klase nuk mund te ekzekutohet brenda projektit me JavaFX sepse Libraria apache.spark qe eshte shtuar
+// ne pom.xml nuk lejon te kemi fajllin module-info.java e i cili eshte i domosdoshem per JavaFx per 4 detyrat e tjera
+
+// Per te treguar se kodi ne vijim eshte valid kam vendosur nje screenshot pas ekzekutimi me fajllin
+// test_input.txt te vendosur ne root te nje projekti tjeter qe ka vetem librarine apache.spark
+// Ne kete imazh shihen dhe rezultatet e fituara pas ekzekutimit
+
+// Po e komentoj kodin ashtuqe build i projektit te mos deshtoje
+
+
+
+
+
+
+
+
+
+
 //import org.apache.spark.SparkConf;
 //import org.apache.spark.api.java.JavaPairRDD;
 //import org.apache.spark.api.java.JavaRDD;
 //import org.apache.spark.api.java.JavaSparkContext;
-//import org.apache.spark.api.java.function.FlatMapFunction;
-//import org.apache.spark.api.java.function.Function;
-//import org.apache.spark.api.java.function.Function2;
-//import org.apache.spark.api.java.function.PairFunction;
 //import scala.Tuple2;
-////public class Main {
-////    public static void main(String[] args) {
-////        SparkConf conf = new SparkConf().setAppName("SparkWordCount").setMaster("local[3]");
-////        JavaSparkContext sc = new JavaSparkContext(conf);
-////        JavaRDD<String> file = sc.textFile("hdfs://localhost:54310/sparkinput/data.txt");
-////        JavaRDD<String> words = file.flatMap(new FlatMapFunction<String, String>() {
-////            @Override
-////            public Iterator<String> call(String s) throws Exception {
-////                return (Iterator<String>) Arrays.asList(s.split(" "));
-////            }
-////        });
-////        words = words.filter(new Function<String, Boolean>() {
-////            @Override
-////            public Boolean call(String s) throws Exception {
-////                if (s.trim().length() == 0) {
-////                    return false;
-////                }
-////                return true;
-////            }
-////        });
-////        JavaPairRDD<String, Integer> wordToCountMap = words.mapToPair(new PairFunction<String, String, Integer>() {
-////            @Override
-////            public Tuple2<String, Integer> call(String s) throws Exception {
-////                return new Tuple2<String, Integer>(s, 1);
-////            }
-////        });
-////        JavaPairRDD<String, Integer> wordCounts = wordToCountMap.reduceByKey(new Function2<Integer, Integer, Integer>() {
-////            @Override
-////            public Integer call(Integer first, Integer second) throws Exception {
-////                return first + second;
-////            }
-////        });
-////        wordCounts.saveAsTextFile("hdfs://localhost:54310/sparkinput/output");
-////    }
-////}
-//
 //
 //import java.util.Arrays;
-//import java.util.Iterator;
 //
-//import org.apache.spark.SparkConf;
-//import org.apache.spark.api.java.JavaPairRDD;
-//import org.apache.spark.api.java.JavaRDD;
-//import org.apache.spark.api.java.JavaSparkContext;
-//import org.apache.spark.api.java.function.FlatMapFunction;
-//import org.apache.spark.api.java.function.Function2;
-//import org.apache.spark.api.java.function.PairFunction;
 //public class Main {
 //
-//    public static void main(String[] args) {
-//        System.out.println("hiiii");
-//        SparkConf sparkConf = new SparkConf().setMaster("local").setAppName("JD Word Counter");
+//    private static void wordCount(String fileName) {
+//
+//        SparkConf sparkConf = new SparkConf().setMaster("local").setAppName("Word Counter");
 //
 //        JavaSparkContext sparkContext = new JavaSparkContext(sparkConf);
 //
-//        JavaRDD<String> inputFile = sparkContext.textFile("hdfs://localhost:54310/sparkinput/data.txt");
-////        JavaRDD<String> inputFile = sparkContext.textFile("/home/eljesa/Desktop/spark_input_file.txt");
+//        JavaRDD<String> inputFile = sparkContext.textFile(fileName);
 //
-//        JavaRDD<String> wordsFromFile = inputFile.flatMap(content -> Arrays.asList(content.split(" ")).iterator());
+//        JavaRDD<String> wordsFromFile = inputFile.flatMap(content -> Arrays.asList(content.split(" ")));
 //
-//        JavaPairRDD<String,Integer> countData = wordsFromFile.mapToPair(t -> new Tuple2<String,Integer>(t,1)).reduceByKey((x, y) -> x + y);
+//        JavaPairRDD countData = wordsFromFile.mapToPair(t -> new Tuple2(t, 1)).reduceByKey((x, y) -> (int) x + (int) y);
 //
-//        countData.collect().forEach(t -> System.out.println(t._1+" : "+t._2));
+//        countData.saveAsTextFile("CountData2");
+//    }
+//
+//    public static void main(String[] args) {
+//        wordCount("test_input.txt");
 //    }
 //}
