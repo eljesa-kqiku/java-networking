@@ -51,13 +51,13 @@ public class Database {
 
         Guest newGuest = new Guest(clientFirstName, clientLastName);
         guests.add(newGuest);
-        reservations.add(new Reservation(newGuest.getId(), roomId, startDate, endDate));
+        String description = STR."\{startDate} - \{endDate} (\{roomNumber}): \{clientFirstName} \{clientLastName}";
+        reservations.add(new Reservation(newGuest.getId(), roomId, startDate, endDate, description));
     }
     public void createReservation(UUID clientId, UUID roomId, Date startDate, Date endDate){
         if(!isRoomAvailable(startDate, endDate, roomId))
             return;
-
-        reservations.add(new Reservation(clientId, roomId, startDate, endDate));
+        reservations.add(new Reservation(clientId, roomId, startDate, endDate, ""));
     }
     private boolean isRoomAvailable(Date startDate, Date endDate, UUID roomId){
         List<Reservation> sameDateReservations = sameDateReservations(startDate, endDate);
@@ -87,7 +87,7 @@ public class Database {
 
         return availableRooms;
     }
-    private List<Reservation> sameDateReservations(Date startDate, Date endDate){
+    public List<Reservation> sameDateReservations(Date startDate, Date endDate){
         return reservations.stream().filter(item ->
                 (item.getStartDate()).compareTo(startDate) >= 0 && (item.getEndDate()).compareTo(startDate) < 0 ||
                         (item.getStartDate()).compareTo(endDate) > 0 && (item.getEndDate()).compareTo(endDate) <= 0  ||

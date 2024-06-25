@@ -1,6 +1,7 @@
 package com.example.javanetworking.HotelReservations;
 
 import com.example.javanetworking.HotelReservations.DatabaseModel.Database;
+import com.example.javanetworking.HotelReservations.DatabaseModel.Reservation;
 import com.example.javanetworking.HotelReservations.DatabaseModel.Room;
 import com.example.javanetworking.HotelReservations.DatabaseModel.RoomType;
 
@@ -23,9 +24,19 @@ public class HotelServerInterfaceImplementation extends UnicastRemoteObject impl
         database.createReservation(first_name, last_name, roomNumber, startDate, endDate);
     }
 
+    @Override
+    public List<Reservation> sameDateReservations(Date startDate, Date endDate) throws RemoteException {
+        return database.sameDateReservations(startDate, endDate);
+    }
+
+    @Override
+    public void cancelReservation(UUID reservationID) throws RemoteException {
+        database.cancelReservation(reservationID);
+    }
+
     public static void main(String[] args) throws RemoteException {
         HotelServerInterfaceImplementation server = new HotelServerInterfaceImplementation();
-        Registry registry = LocateRegistry.createRegistry(1099);
+        Registry registry = LocateRegistry.createRegistry(1339);
         registry.rebind("HotelServerInterfaceImplementation", server);
         System.out.println("Chat server started.");
     }

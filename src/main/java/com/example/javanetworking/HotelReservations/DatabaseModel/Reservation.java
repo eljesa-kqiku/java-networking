@@ -1,21 +1,24 @@
 package com.example.javanetworking.HotelReservations.DatabaseModel;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.UUID;
 
-public class Reservation {
+public class Reservation implements Serializable {
     private UUID id;
     private UUID clientId;
     private UUID roomId;
     private Date startDate;
     private Date endDate;
+    private String description;
 
-    public Reservation(UUID clientId, UUID roomId, Date startDate, Date endDate) {
+    public Reservation(UUID clientId, UUID roomId, Date startDate, Date endDate, String description) {
         this.id = UUID.randomUUID();
         this.clientId = clientId;
         this.roomId = roomId;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.description = description;
     }
 
     public UUID getId() {
@@ -56,5 +59,13 @@ public class Reservation {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
